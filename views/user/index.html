@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="author" content="Yaofeng">
+        <title>主页</title>
+        <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="/js/jquery.min.js"></script>
+        <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <style>
+            body{
+                overflow-x: hidden;
+            }
+            .book-title{
+                white-space: nowrap;
+                overflow: hidden;
+            }
+            nav{
+                padding-right: 30px;
+            }
+        </style>
+    </head>
+    <body>
+        {{include '../tpl/head'}}
+
+        <div class="row" style="padding-top: 80px;">
+            {{each books}}
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                <a href="{{$value.link}}"><img src="{{$value.image}}"></a>
+                <div class="caption">
+                    <p class="book-title" style="text-overflow: ellipsis;">{{$value.name}}</p>
+                    <p>
+                        <span>作者：{{$value.author}}</span>
+                        <span class="pull-right" style="color: red;">￥{{$value.price}}</span>
+                    </p>
+                    <button class="btn btn-info" onclick="borrow('{{$value.id}}')">借阅</button>
+                </div>
+                </div>
+            </div>
+            {{/each}}
+        </div> 
+        <div class="container">
+            {{if cPage == 1}}
+            <button class="btn btn-warning col-xs-4 disabled">上一页</button>
+            {{else}}
+            <button class="btn btn-warning col-xs-4" onclick="location.href='/user/{{cPage-1}}'">上一页</button>
+            {{/if}}
+            {{if cPage == totalPage}}
+            <button class="btn btn-warning pull-right col-xs-4 disabled">下一页</button>
+            {{else}}
+            <button class="btn btn-warning pull-right col-xs-4" onclick="location.href='/user/{{cPage+1}}'">下一页</button>
+            {{/if}}
+        </div>    
+    </body>
+    <script>
+        function borrow(bookId){
+            {{if userId}}
+            $.ajax({
+                url: '/user/borrow',
+                type: 'get',
+                data: {bookId: bookId},
+                dataType: 'json',
+                success: function(res){
+                    alert(res.msg);
+                },
+                error: function(err){
+                    console.dir(err);
+                }
+            });
+            {{else}}
+            alert('请先登录！');
+            {{/if}}
+        }
+    </script>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="author" content="Yaofeng">
+        <title>用户中心</title>
+        <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="/js/jquery.min.js"></script>
+        <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <style>
+            th{
+                text-align: center;
+            }
+            nav{
+                padding-right: 30px;
+            }
+        </style>
+    </head>
+    <body>
+        {{include '../tpl/head'}}
+
+        <div class="container" style="padding-top: 80px">
+            <table class="table table-striped">
+                <thead>
+                    <th>序号</th>
+                    <th>书名</th>
+                    <th>作者</th>
+                    <th>借阅时间</th>
+                    <th>操作</th>
+                </thead>
+                <tbody id="write-book">
+                    {{each data}}
+                    <tr>
+                        <td>{{$index+1}}</td>
+                        <td>{{$value.bId.name}}</td>
+                        <td style="text-align: center;">{{$value.bId.author}}</td>
+                        <td style="text-align: center;">{{$value.getBorrowDate()}}</td>
+                        <td><button class="btn btn-info" onclick="cancelHandel('{{$value.bId.id}}')">取消订阅</button></td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </body>
+    <script>
+        function cancelHandel(bookId){
+            $.ajax({
+                url: '/user/cancel',
+                type: 'get',
+                data: {bid: bookId},
+                dataType: 'json',
+                success: function(res){
+                    if(res.status == 200){
+                        alert(res.msg);
+                        location.reload();
+                    }else{
+                        alert(res.msg);
+                    }
+                },
+                error: function(err){
+                    console.dir(err);
+                }
+            });
+        }
+    </script>
+</html>

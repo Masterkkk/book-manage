@@ -1,0 +1,22 @@
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <a class="navbar-brand" href="#">学生图书借阅系统</a>
+    <ul class="nav navbar-nav">
+        <li class="active">
+            <a href="/user/">书籍列表</a>
+        </li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+        {{if userId}}
+        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">用户中心 <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li><a href="/user/person">个人中心</a></li>
+                <li><a href="">在线客服</a></li>
+            </ul>
+        </li>
+        <li><a href="/logout">退出</a></li>
+        {{else}}
+        <li><a href="/login">登录</a></li>
+        <li><a href="/register">注册</a></li>
+        {{/if}}
+    </ul>
+</nav>
